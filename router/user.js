@@ -3,7 +3,13 @@ const Router = require('koa-router');
 const userRouter = new Router();
 
 // 登录
-userRouter.post('/login', async (ctx) => {});
+userRouter.post('/login', async (ctx) => {
+	ctx.body = {
+		code: 0,
+		data: null,
+		message: '',
+	};
+});
 
 // 登出
 userRouter.post('/logout', async (ctx) => {});
