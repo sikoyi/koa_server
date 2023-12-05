@@ -3,14 +3,14 @@
 const config = {
 	mailer: {
 		prot: 3000,
-		host: 'localhost',
+		host: '127.0.0.1',
 	},
 	// 数据库相关配置
 	database: {
 		USERNAME: 'root',
-		PASSWORD: '',
+		PASSWORD: '123456',
 		DATABASE: 'koa_demo',
-		HOST: '3306',
+		HOST: '127.0.0.1',
 	},
 };
 

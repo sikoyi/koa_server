@@ -3,8 +3,8 @@
     "host": "127.0.0.1",
     "port": "33066",
     "username": "root",
-    "password": "123123",
-    "database": "egg-beehive-dev",
+    "password": "123456",
+    "database": "koa-demo",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -12,8 +12,8 @@
     "host": "127.0.0.1",
     "port": "33066",
     "username": "root",
-    "password": "123123",
-    "database": "egg-beehive-test",
+    "password": "123456",
+    "database": "koa-demo",
     "dialect": "mysql",
     "operatorsAliases": false
   }
