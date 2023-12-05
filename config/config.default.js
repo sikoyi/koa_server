@@ -3,7 +3,7 @@
 const config = {
 	mailer: {
 		prot: 3000,
-		host: '127.0.0.1',
+		host: 'localhost',
 	},
 	// 数据库相关配置
 	database: {

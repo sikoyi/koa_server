@@ -3,12 +3,14 @@ const app = new Koa();
 const path = require('path');
 const bodyParser = require('koa-bodyparser');
 const static = require('koa-static');
+const convert = require('koa-convert'); // 将 generator 写法的中间件转换成promise 写法
+const koaLogger = require('koa-logger'); // 将 generator 写法的中间件转换成promise 写法
 
 const config = require('./config/config.default');
 const router = require('./router');
 
-// const session = require('koa-session-minimal');
-// const MysqlStore = require('koa-mysql-session');
+const session = require('koa-session-minimal');
+const MysqlStore = require('koa-mysql-session');
 
 const staticPath = './public';
 
@@ -20,20 +22,24 @@ const sessionMysqlConfig = {
 	host: config.database.HOST,
 };
 
-// app.use(
-// 	session({
-// 		key: 'USER_SID',
-// 		store: new MysqlStore(sessionMysqlConfig),
-// 	})
-// );
+app.use(
+	session({
+		key: 'USER_SID',
+		store: new MysqlStore(sessionMysqlConfig),
+	})
+);
 
-app.use(static(path.join(__dirname, staticPath))); // 暴露静态资源
+// 控制台日志中间件
+app.use(convert(koaLogger()));
+
 app.use(bodyParser()); // 解析POST请求的body内容
+
+app.use(convert(static(path.join(__dirname, staticPath)))); // 暴露静态资源
 
 app.use(router.routes()).use(router.allowedMethods()); // 注册路由
 
 app.listen(config.mailer.prot, () => {
-	console.log(`serverDidReady http://127.0.0.1:${config.mailer.prot}`);
+	console.log(`start server http://${config.mailer.host}:${config.mailer.prot}`);
 });
 
 module.exports = app;
