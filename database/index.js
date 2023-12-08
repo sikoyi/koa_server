@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const { development } = require('./config.json');
 //创建连接池
 var pool = mysql.createPool({

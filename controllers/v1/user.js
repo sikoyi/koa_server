@@ -12,7 +12,7 @@ class RoleController {
 	 * token刷新
 	 * @param {*} ctx
 	 */
-	async refresh(ctx) {
+	async refreshToken(ctx) {
 		let { authorization } = ctx.headers;
 
 		const token = authorization.split(' ')[1];
@@ -122,6 +122,48 @@ class RoleController {
 			message: '',
 		};
 	}
+
+	/**
+	 * 退出登录
+	 * @param {*} ctx
+	 */
+	async logout(ctx) {}
+
+	/**
+	 * 获取所有用户信息
+	 * @param {*} ctx
+	 */
+	async findAll(ctx) {}
+
+	/**
+	 * 获取 指定用户
+	 * @param {*} ctx
+	 */
+	async findOne(ctx) {}
+
+	/**
+	 * 获取用户信息
+	 * @param {*} ctx
+	 */
+	async userInfo(ctx) {}
+
+	/**
+	 * 创建用户信息
+	 * @param {*} ctx
+	 */
+	async create(ctx) {}
+
+	/**
+	 * 更新用户信息
+	 * @param {*} ctx
+	 */
+	async update(ctx) {}
+
+	/**
+	 * 删除用户信息
+	 * @param {*} ctx
+	 */
+	async delete(ctx) {}
 }
 
 module.exports = RoleController;
