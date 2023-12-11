@@ -1,10 +1,10 @@
 {
   "development": {
     "host": "127.0.0.1",
-    "port": "33066",
+    "port": "3306",
     "username": "root",
     "password": "123456",
-    "database": "koa-demo",
+    "database": "koa_demo",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -13,7 +13,7 @@
     "port": "33066",
     "username": "root",
     "password": "123456",
-    "database": "koa-demo",
+    "database": "koa_demo",
     "dialect": "mysql",
     "operatorsAliases": false
   }

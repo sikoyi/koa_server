@@ -13,7 +13,7 @@ const router = require('./app/router');
 const session = require('koa-session-minimal');
 const MysqlStore = require('koa-mysql-session');
 const JWT = require('koa-jwt');
-const errorHandle = require('./controllers/v1/jwtErrhandle');
+const errorHandle = require('./app/controllers/v1/jwtErrhandle');
 
 // session存储配置
 const sessionMysqlConfig = {

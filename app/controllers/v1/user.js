@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
-const config = require('../../config/config.default');
+const config = require('../../../config/config.default');
+const UserService = require('../../services/user');
+const userService = new UserService();
 
 // mock数据
 const users = [{ username: 'admin', password: '123456' }];
@@ -151,7 +153,22 @@ class RoleController {
 	 * 创建用户信息
 	 * @param {*} ctx
 	 */
-	async create(ctx) {}
+	async create(ctx) {
+		try {
+			const result = await userService.addUser();
+			ctx.body = {
+				code: 0,
+				data: null,
+				message: '操作成功',
+			};
+		} catch (error) {
+			ctx.body = {
+				code: 0,
+				data: null,
+				message: `操作失败, ${error.message}`,
+			};
+		}
+	}
 
 	/**
 	 * 更新用户信息

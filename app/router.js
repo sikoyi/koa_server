@@ -2,7 +2,7 @@ const Router = require('koa-router');
 
 const router = new Router();
 
-const RoleController = require('../controllers/v1/user');
+const RoleController = require('./controllers/v1/user');
 const user = new RoleController();
 
 /**
