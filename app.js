@@ -13,9 +13,9 @@ const router = require('./app/router');
 const session = require('koa-session-minimal');
 const MysqlStore = require('koa-mysql-session');
 const JWT = require('koa-jwt');
-const errorHandle = require('./app/controllers/v1/jwtErrhandle');
+const errorHandle = require('./app/middleware/jwtErrhandle');
 
-// session存储配置
+// session存储配置  aasfsvxvcb
 const sessionMysqlConfig = {
 	user: config.database.USERNAME,
 	password: config.database.PASSWORD,

@@ -135,7 +135,14 @@ class RoleController {
 	 * 获取所有用户信息
 	 * @param {*} ctx
 	 */
-	async findAll(ctx) {}
+	async findAll(ctx) {
+		const result = await userService.findAll();
+
+		ctx.body = {
+			code: 0,
+			data: result,
+		};
+	}
 
 	/**
 	 * 获取 指定用户
