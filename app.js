@@ -11,7 +11,7 @@ const config = require('./config/config.default');
 const router = require('./app/router');
 
 const session = require('koa-session-minimal');
-const MysqlStore = require('koa-mysql-session');
+// const MysqlStore = require('koa-mysql-session');
 const JWT = require('koa-jwt');
 const errorHandle = require('./app/middleware/jwtErrhandle');
 
@@ -27,12 +27,12 @@ const jwt = JWT({
 	secret: config.jwt.secret,
 }).unless(config.jwt.unless);
 
-app.use(
-	session({
-		key: 'USER_SID',
-		store: new MysqlStore(sessionMysqlConfig),
-	})
-);
+// app.use(
+// 	session({
+// 		key: 'USER_SID',
+// 		store: new MysqlStore(sessionMysqlConfig),
+// 	})
+// );
 
 const middleware = compose([errorHandle, jwt]);
 
