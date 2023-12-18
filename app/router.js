@@ -15,6 +15,6 @@ router.post('/user/delete', user.delete);
 router.post('/user/refreshToken', user.refreshToken);
 router.get('/user/findAll', user.findAll);
 router.post('/user/findOne', user.findOne);
-router.get('/user/userInfo', user.userInfo);
+router.get('/user/get-permission-info', user.userInfo);
 
 module.exports = router;

@@ -1,10 +1,8 @@
-const jwt = require("jsonwebtoken");
-const config = require("../../../config/config.default");
-const UserService = require("../../services/user");
-const userService = new UserService();
+const jwt = require('jsonwebtoken');
 
-// mock数据
-const users = [{ username: "admin", password: "123456" }];
+const config = require('../../../config/config.default');
+const UserService = require('../../services/user');
+const userService = new UserService();
 
 /**
  * @controller 用户 user
@@ -15,47 +13,39 @@ class RoleController {
    * @param {*} ctx
    */
   async refreshToken(ctx) {
-    let { authorization } = ctx.headers;
+    try {
+      let { authorization } = ctx.headers;
 
-    const token = authorization.split(" ")[1];
-    const data = jwt.verify(token, config.jwt.secret);
-    console.log("data", data);
-    // todo 需要增加用户校验 - 待实现
+      const token = authorization.split(' ')[1];
+      console.log('token', token);
+      const data = jwt.verify(token, config.jwt.secret);
+      // 需要删除解出来的 iat exp 不然重新加密会出问题
+      delete data.iat;
+      delete data.exp;
+      // todo 需要增加用户校验 - 待实现
 
-    const accessToken = jwt.sign(
-      {
-        username: data.username,
-      },
-      config.jwt.secret,
-      {
-        expiresIn: "0.1h",
-      }
-    );
+      const accessToken = jwt.sign(data, config.jwt.secret, {
+        expiresIn: '1h',
+      });
 
-    const refreshToken = jwt.sign(
-      {
-        username: data.username,
-      },
-      config.jwt.secret,
-      {
-        expiresIn: "7d",
-      }
-    );
+      const refreshToken = jwt.sign(data, config.jwt.secret, {
+        expiresIn: '7d',
+      });
 
-    if (!data) {
-      ctx.body = {
-        code: 108,
-        data: null,
-        message: "请重新登录",
-      };
-    } else {
       ctx.body = {
         code: 0,
         data: {
           accessToken,
           refreshToken,
         },
-        message: "ok",
+        message: '操作成功',
+      };
+    } catch (error) {
+      console.log(error);
+      ctx.body = {
+        code: 500,
+        data: null,
+        message: error,
       };
     }
   }
@@ -68,27 +58,22 @@ class RoleController {
   async login(ctx) {
     try {
       const { username, password } = ctx.request.body;
-      const userInfo = await userService.login(username, password);
+      const result = await userService.login(username, password);
+      const userInfo = {
+        id: result.id,
+        nickname: result.nickname,
+        avatar: result.avatar,
+      };
 
-      const accessToken = jwt.sign(
-        {
-          username: userInfo.username,
-        },
-        config.jwt.secret,
-        {
-          expiresIn: "0.1h",
-        }
-      );
+      // 短token
+      const accessToken = jwt.sign(userInfo, config.jwt.secret, {
+        expiresIn: '1h',
+      });
 
-      const refreshToken = jwt.sign(
-        {
-          username: userInfo.username,
-        },
-        config.jwt.secret,
-        {
-          expiresIn: "7d",
-        }
-      );
+      // 长token
+      const refreshToken = jwt.sign(userInfo, config.jwt.secret, {
+        expiresIn: '7d',
+      });
 
       ctx.body = {
         code: 200,
@@ -96,14 +81,13 @@ class RoleController {
           accessToken,
           refreshToken,
         },
-        message: "登录成功",
+        message: '登录成功',
       };
     } catch (error) {
-      console.log(error);
       ctx.body = {
         code: 101,
         data: null,
-        message: error,
+        message: typeof error === 'object' ? error.message : error,
       };
     }
   }
@@ -112,7 +96,13 @@ class RoleController {
    * 退出登录
    * @param {*} ctx
    */
-  async logout(ctx) {}
+  async logout(ctx) {
+    ctx.body = {
+      code: 0,
+      data: null,
+      message: '退出登录成功',
+    };
+  }
 
   /**
    * 获取所有用户信息
@@ -138,12 +128,32 @@ class RoleController {
    * @param {*} ctx
    */
   async userInfo(ctx) {
-    ctx.body = {
-      code: 200,
-      data: {
-        username: "jack",
-      },
-    };
+    try {
+      const { authorization } = ctx.request.headers;
+      const token = authorization.split(' ')[1];
+      const userInfo = jwt.verify(token, config.jwt.secret);
+
+      delete userInfo.iat;
+      delete userInfo.exp;
+
+      ctx.body = {
+        code: 200,
+        data: {
+          menus: [], // 路由信息
+          permissions: [], // 权限
+          user: userInfo, // 用户信息
+          roles: ['super_admin'], // 角色身份
+        },
+        message: '操作成功',
+      };
+    } catch (error) {
+      console.log('userInfo Error: ', error);
+      ctx.body = {
+        code: 500,
+        data: null,
+        message: typeof error === 'object' ? error.message : error,
+      };
+    }
   }
 
   /**
@@ -152,17 +162,18 @@ class RoleController {
    */
   async create(ctx) {
     try {
-      await userService.addUser(ctx.request.body);
+      const requestBody = ctx.request.body;
+      await userService.addUser(requestBody);
       ctx.body = {
         code: 0,
         data: null,
-        message: "操作成功",
+        message: '操作成功',
       };
     } catch (error) {
       ctx.body = {
         code: 0,
         data: null,
-        message: `操作失败, ${error.message}`,
+        message: typeof error === 'object' ? error.message : error,
       };
     }
   }

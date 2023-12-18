@@ -25,7 +25,7 @@ const config = {
 	jwt: {
 		secret: 'xhzfoijtar.yyds*.123456@!',
 		unless: {
-			path: [/^\/public/, /\user\/login/, /\user\/register/], // 免auth鉴权路由
+			path: [/^\/public/, /\user\/login/, /\user\/create/], // 免auth鉴权路由
 		},
 	},
 };
