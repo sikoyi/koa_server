@@ -1,25 +1,2 @@
-# 后台服务端
-
-
-
-### 已完成模块 
-
-#### JWT身份鉴权 token无痛刷新
-
-
-### 待实现
-
-#### 动态路由
-
-#### 动态身份权限设置
-
-#### 数据字典
-
-后端动态路由
-
-                  超级管理员   路由表           
-                  
-                  
-                  普通用户     路由表
-                                 
-                            
+### 后台模板参考： https://github.com/Imfdj/egg-beehive.git
+### 前端模板参考： https://github.com/Imfdj/vue-beehive.git
